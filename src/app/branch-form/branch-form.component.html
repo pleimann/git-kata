@@ -1,5 +1,8 @@
-<form [formGroup]="branchForm" (submit)="checkout(branchForm.value)">
+<form [formGroup]="branchForm" (submit)="checkout()">
   <mat-card fxFlex fxFlexAlign="start">
+    <mat-card-title>Branch
+      <mat-card-subtitle>Create a new branch</mat-card-subtitle>
+    </mat-card-title>
     <mat-card-content>
       <div fxLayout="column wrap">
         <mat-form-field>
@@ -8,6 +11,7 @@
         </mat-form-field>
       </div>
     </mat-card-content>
+    <mat-divider></mat-divider>
     <mat-card-actions>
       <button mat-stroked-button color="primary" type="submit">Branch</button>
     </mat-card-actions>

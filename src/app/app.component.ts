@@ -1,12 +1,9 @@
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
-import { Component, ViewChild } from '@angular/core';
-import { FormBuilder, FormGroup } from '@ngneat/reactive-forms';
+import { AfterViewInit, Component, ViewChild } from '@angular/core';
 import { Observable } from 'rxjs';
 import { map, shareReplay } from 'rxjs/operators';
-import { BranchFormComponent } from './branch-form/branch-form.component';
-import { CommitFormComponent } from './commit-form/commit-form.component';
 import { GitGraphComponent } from './git-graph/git-graph.component';
-import { BranchOptions, CommitOptions } from './git.config';
+import { BranchOptions, CommitOptions, MergeOptions } from './git.config';
 
 @Component({
   selector: 'app-root',
@@ -15,7 +12,7 @@ import { BranchOptions, CommitOptions } from './git.config';
 })
 export class AppComponent {
   @ViewChild(GitGraphComponent)
-  private gitComponent: GitGraphComponent | undefined;
+  gitComponent: GitGraphComponent | undefined;
 
   isHandset$: Observable<boolean> = this.breakpointObserver.observe(Breakpoints.Handset)
     .pipe(
@@ -33,5 +30,9 @@ export class AppComponent {
 
   public branch(branch: BranchOptions) {
     this.gitComponent?.branch(branch);
+  }
+
+  public merge(options: MergeOptions) {
+    this.gitComponent?.merge(options)
   }
 }

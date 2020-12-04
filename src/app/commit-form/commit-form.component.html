@@ -1,5 +1,8 @@
 <form [formGroup]="commitForm" (submit)="commit()">
   <mat-card fxFlex fxFlexAlign="start">
+    <mat-card-title>Commit
+      <mat-card-subtitle>Commit changes to the currently checked out branch</mat-card-subtitle>
+    </mat-card-title>
     <mat-card-content>
       <div fxLayout="column wrap">
         <mat-form-field fxFlexFill>
@@ -9,14 +12,14 @@
         <mat-form-field fxFlexFill>
           <mat-label>Subject</mat-label>
           <input matInput type="text" #subjectInput formControlName="subject">
-          <button mat-button *ngIf="subjectInput.value" matSuffix mat-icon-button aria-label="Clear"
+          <button mat-button type="button" *ngIf="subjectInput.value" matSuffix mat-icon-button aria-label="Clear"
             (click)="subjectInput.value = ''">
             <mat-icon>close</mat-icon>
           </button>
         </mat-form-field>
       </div>
     </mat-card-content>
-
+    <mat-divider></mat-divider>
     <mat-card-actions>
       <button mat-stroked-button color="primary" type="submit">Commit</button>
     </mat-card-actions>

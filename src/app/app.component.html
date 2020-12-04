@@ -1,26 +1,35 @@
 <mat-sidenav-container class="sidenav-container">
-  <!-- <mat-sidenav #drawer class="sidenav" fixedInViewport [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'"
-    [mode]="(isHandset$ | async) ? 'over' : 'side'" [opened]="(isHandset$ | async) === false">
+  <mat-sidenav #drawer class="sidenav" fixedInViewport [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'"
+    [mode]="(isHandset$ | async) ? 'over' : 'side'" [opened]="false">
     <mat-toolbar>Menu</mat-toolbar>
-  </mat-sidenav> -->
+  </mat-sidenav>
 
   <mat-sidenav-content>
     <mat-toolbar color="primary">
-      <button type="button" aria-label="Toggle sidenav" mat-icon-button (click)="drawer.toggle()"
-        *ngIf="isHandset$ | async">
+      <button type="button" aria-label="Toggle sidenav" mat-icon-button (click)="drawer.toggle()">
         <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
       </button>
       <span>GIT Explorer</span>
+      <span class="toolbar-strut"></span>
+      <span class="branch-selector">
+        <mat-select [value]="gitComponent?.currentBranch$ | async" (selectionChange)="gitComponent.checkout($event.value)">
+          <mat-option *ngFor="let branch of gitComponent?.branches$ | async" [value]="branch">
+            {{branch}}
+          </mat-option>
+        </mat-select>
+      </span>
     </mat-toolbar>
 
     <div class="content" fxLayout="row" fxLayoutGap="2em grid">
       <div fxLayout="column" fxLayoutGap="1em" fxFlex="40em">
         <app-commit-form (onCommit)="commit($event)"></app-commit-form>
         <app-branch-form (onCheckout)="branch($event)"></app-branch-form>
+        <app-merge-form (onMerge)="merge($event)" [branches]="gitComponent?.branches$ | async"
+          [currentBranch]="gitComponent?.currentBranch$ | async"></app-merge-form>
       </div>
-      <div fxFlexFill>
+      <div>
         <app-git-graph></app-git-graph>
       </div>
     </div>
-    </mat-sidenav-content>
-    </mat-sidenav-container>
+  </mat-sidenav-content>
+</mat-sidenav-container>

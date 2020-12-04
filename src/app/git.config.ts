@@ -1,11 +1,18 @@
 import { InjectionToken } from '@angular/core';
-import { GitgraphBranchOptions, GitgraphCommitOptions, GitgraphOptions, BranchUserApi } from '@gitgraph/core';
+import {
+  GitgraphOptions,
+  GitgraphBranchOptions,
+  GitgraphCommitOptions,
+  GitgraphMergeOptions,
+  BranchUserApi
+} from '@gitgraph/core';
 
 type TNode = SVGElement;
 
 export type GitOptions = GitgraphOptions;
 export type CommitOptions = GitgraphCommitOptions<TNode>;
 export type BranchOptions = GitgraphBranchOptions<TNode>;
+export type MergeOptions = GitgraphMergeOptions<TNode>;
 
 export type BranchOperations = BranchUserApi<TNode>;
 

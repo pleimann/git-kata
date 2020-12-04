@@ -1,0 +1,23 @@
+<form [formGroup]="mergeForm" (submit)="merge()">
+  <mat-card fxFlex fxFlexAlign="start">
+    <mat-card-title>Merge
+      <mat-card-subtitle>Merge selected branch into <b>{{currentBranch}}</b></mat-card-subtitle>
+    </mat-card-title>
+    <mat-card-content>
+      <div fxLayout="column wrap">
+        <mat-form-field>
+          <mat-label>Branch to Merge</mat-label>
+          <mat-select formControlName="branch">
+            <mat-option *ngFor="let branch of branches" [value]="branch">
+              {{branch}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+    </mat-card-content>
+    <mat-divider></mat-divider>
+    <mat-card-actions>
+      <button mat-stroked-button color="primary" type="submit">Merge</button>
+    </mat-card-actions>
+  </mat-card>
+</form>

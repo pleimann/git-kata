@@ -1,7 +1,8 @@
 import { AfterViewInit, Component, ElementRef, Inject, ViewChild } from '@angular/core';
 import { GitgraphUserApi, BranchUserApi, Mode } from '@gitgraph/core';
 import { BranchOptions, CommitOptions, createGitgraph, MergeOptions, TagOptions } from '@gitgraph/js';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 import { BranchOperations, DEFAULT_COMMIT_OPTIONS, GITGRAPH_OPTIONS, GitOptions } from '../git.config';
 
 @Component({
@@ -14,7 +15,7 @@ export class GitGraphComponent implements AfterViewInit {
   private graphContainer!: ElementRef;
 
   private gitgraph!: GitgraphUserApi<SVGElement>;
-  private branches = new Map<string, BranchOperations>();
+  private _branchesMap$ = new BehaviorSubject<Map<string, BranchOperations>>(new Map<string, BranchOperations>());
   private _currentBranch$ = new BehaviorSubject<BranchOperations>(undefined);
 
   constructor(
@@ -22,11 +23,25 @@ export class GitGraphComponent implements AfterViewInit {
     @Inject(DEFAULT_COMMIT_OPTIONS) public defaultCommitOptions: CommitOptions,
   ) { }
 
-  get currentBranch$() {
-    return this._currentBranch$.asObservable();
+  /* BEGIN - Public API */
+  get branches$(): Observable<string[]> {
+    return this._branchesMap$.pipe(map(branchesMap => [...branchesMap.keys()]));
   }
 
-  private get currentBranch() {
+  get currentBranch$(): Observable<string> {
+    return this._currentBranch$.asObservable().pipe(map(currentBranch => currentBranch.name));
+  }
+  /* END - Public API */
+
+  private get branchesMap(): Map<string, BranchOperations> {
+    return this._branchesMap$.getValue();
+  }
+
+  private set branchesMap(map: Map<string, BranchOperations>) {
+    this._branchesMap$.next(map);
+  }
+
+  private get currentBranch(): BranchOperations {
     return this._currentBranch$.getValue();
   }
 
@@ -46,8 +61,13 @@ export class GitGraphComponent implements AfterViewInit {
     this.branch({ name: 'newFeature' });
     this.commit({ subject: 'new feature commit' });
 
-    // this.checkout('master');
-    this.merge('newFeature', 'NewFeature Merge', 'master');
+    this.checkout('master');
+    this.merge({
+      branch: 'newFeature',
+      commitOptions: {
+        subject: 'NewFeature Merge'
+      }
+    });
   }
 
   commit(commit: CommitOptions, branchName?: string) {
@@ -62,29 +82,30 @@ export class GitGraphComponent implements AfterViewInit {
   }
 
   checkout(branchName: string): BranchOperations {
-    return this.currentBranch = this.branches.get(branchName);
+    return this.currentBranch = this.branchesMap.get(branchName);
   }
 
   branch(branchOptions: BranchOptions): BranchOperations {
     const branchOperations = this.gitgraph.branch(branchOptions.name);
 
     this.currentBranch = branchOperations;
-    this.branches.set(branchOptions.name, branchOperations);
+    this.branchesMap.set(branchOptions.name, branchOperations);
 
     return branchOperations;
   }
 
-  merge(sourceBranch: string, subject?: string, destinationBranch?: string): BranchOperations {
-    const mergeBranch = this.branches.get(sourceBranch);
+  merge(mergeOptions: MergeOptions): BranchOperations {
+    if (this.currentBranch === mergeOptions.branch) {
+      console.warn(`You're already on the ${mergeOptions.branch} branch. Checkout the destination branch first.`);
 
-    if (!!destinationBranch) {
-      this.checkout(destinationBranch);
-    }
-
-    if (this.currentBranch === mergeBranch) {
-      console.warn("Can't merge branch to itself. Checkout the destination branch first.");
     } else {
-      this.currentBranch = this.currentBranch.merge(mergeBranch, subject);
+      this.currentBranch = this.currentBranch.merge({
+        ...mergeOptions,
+        commitOptions: {
+          ...this.defaultCommitOptions,
+          ...mergeOptions.commitOptions
+        },
+      });
     }
 
     return this.currentBranch;

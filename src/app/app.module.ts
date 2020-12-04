@@ -1,34 +1,27 @@
-import { NgModule } from '@angular/core';
+import { LayoutModule } from '@angular/cdk/layout';
 import { CommonModule } from '@angular/common';
+import { NgModule } from '@angular/core';
+import { FlexLayoutModule } from '@angular/flex-layout';
 import { ReactiveFormsModule } from '@angular/forms';
+import { MatButtonModule } from '@angular/material/button';
+import { MatCardModule } from '@angular/material/card';
+import { MatFormFieldModule, MAT_FORM_FIELD_DEFAULT_OPTIONS } from '@angular/material/form-field';
+import { MatIconModule } from '@angular/material/icon';
+import { MatInputModule } from '@angular/material/input';
+import { MatListModule } from '@angular/material/list';
+import { MatSelectModule } from '@angular/material/select';
+import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatToolbarModule } from '@angular/material/toolbar';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatButtonModule } from '@angular/material/button';
-import { MatInputModule } from '@angular/material/input';
-import { MatIconModule } from '@angular/material/icon';
-
-import { LayoutModule } from '@angular/cdk/layout';
-import { MatToolbarModule } from '@angular/material/toolbar';
-import { MatSidenavModule } from '@angular/material/sidenav';
-import { MatListModule } from '@angular/material/list';
-import { MatCardModule } from '@angular/material/card';
-
-import { FlexLayoutModule } from '@angular/flex-layout';
-
-import { InspectorModule } from '@ngneat/inspector';
 import { CommitOptions } from '@gitgraph/js';
-
-import { environment } from '../environments/environment';
-
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import { BranchFormComponent } from './branch-form/branch-form.component';
+import { CommitFormComponent } from './commit-form/commit-form.component';
 import { GitGraphComponent } from './git-graph';
 import { DEFAULT_COMMIT_OPTIONS, GITGRAPH_OPTIONS, GitOptions } from './git.config';
-import { CommitFormComponent } from './commit-form/commit-form.component';
-import { BranchFormComponent } from './branch-form/branch-form.component';
-
+import { MergeFormComponent } from './merge-form/merge-form.component';
 
 @NgModule({
   declarations: [
@@ -36,6 +29,7 @@ import { BranchFormComponent } from './branch-form/branch-form.component';
     GitGraphComponent,
     CommitFormComponent,
     BranchFormComponent,
+    MergeFormComponent,
   ],
   imports: [
     BrowserModule,
@@ -43,7 +37,6 @@ import { BranchFormComponent } from './branch-form/branch-form.component';
     AppRoutingModule,
     ReactiveFormsModule,
     BrowserAnimationsModule,
-    environment.production ? [] : InspectorModule.forRoot(),
     FlexLayoutModule,
     LayoutModule,
     MatFormFieldModule,
@@ -54,8 +47,15 @@ import { BranchFormComponent } from './branch-form/branch-form.component';
     MatSidenavModule,
     MatListModule,
     MatCardModule,
+    MatSelectModule,
   ],
   providers: [
+    {
+      provide: MAT_FORM_FIELD_DEFAULT_OPTIONS,
+      useValue: {
+        appearance: 'fill'
+      }
+    },
     { provide: GITGRAPH_OPTIONS, useValue: <GitOptions>{} },
     {
       provide: DEFAULT_COMMIT_OPTIONS, useValue: <CommitOptions>{
@@ -66,3 +66,4 @@ import { BranchFormComponent } from './branch-form/branch-form.component';
   bootstrap: [AppComponent]
 })
 export class AppModule { }
+
