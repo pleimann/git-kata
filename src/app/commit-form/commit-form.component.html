@@ -1,0 +1,24 @@
+<form [formGroup]="commitForm" (submit)="commit()">
+  <mat-card fxFlex fxFlexAlign="start">
+    <mat-card-content>
+      <div fxLayout="column wrap">
+        <mat-form-field fxFlexFill>
+          <mat-label>Author</mat-label>
+          <input matInput type="text" formControlName="author">
+        </mat-form-field>
+        <mat-form-field fxFlexFill>
+          <mat-label>Subject</mat-label>
+          <input matInput type="text" #subjectInput formControlName="subject">
+          <button mat-button *ngIf="subjectInput.value" matSuffix mat-icon-button aria-label="Clear"
+            (click)="subjectInput.value = ''">
+            <mat-icon>close</mat-icon>
+          </button>
+        </mat-form-field>
+      </div>
+    </mat-card-content>
+
+    <mat-card-actions>
+      <button mat-stroked-button color="primary" type="submit">Commit</button>
+    </mat-card-actions>
+  </mat-card>
+</form>

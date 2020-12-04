@@ -1,37 +1,37 @@
-import { AfterViewInit, Component, ElementRef, ViewChild } from '@angular/core';
-import { createGitgraph } from '@gitgraph/js';
-import { GitgraphUserApi } from '@gitgraph/core';
+import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
+import { Component, ViewChild } from '@angular/core';
+import { FormBuilder, FormGroup } from '@ngneat/reactive-forms';
+import { Observable } from 'rxjs';
+import { map, shareReplay } from 'rxjs/operators';
+import { BranchFormComponent } from './branch-form/branch-form.component';
+import { CommitFormComponent } from './commit-form/commit-form.component';
+import { GitGraphComponent } from './git-graph/git-graph.component';
+import { BranchOptions, CommitOptions } from './git.config';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
-export class AppComponent implements AfterViewInit {
-  @ViewChild('gitgraph')
-  private graphContainer!: ElementRef;
+export class AppComponent {
+  @ViewChild(GitGraphComponent)
+  private gitComponent: GitGraphComponent | undefined;
 
-  private gitgraph!: GitgraphUserApi<SVGElement>;
+  isHandset$: Observable<boolean> = this.breakpointObserver.observe(Breakpoints.Handset)
+    .pipe(
+      map(result => result.matches),
+      shareReplay()
+    );
 
-  constructor() { }
+  constructor(
+    private breakpointObserver: BreakpointObserver,
+  ) { }
 
-  ngAfterViewInit(): void {
-    this.gitgraph = createGitgraph(this.graphContainer.nativeElement);
+  public commit(commit: CommitOptions) {
+    this.gitComponent?.commit(commit);
+  }
 
-    const master = this.gitgraph.branch("master");
-    master.commit("Init the project");
-    master
-      .commit("Add README")
-      .commit("Add tests")
-      .commit("Implement feature");
-    master.tag("v1.0");
-
-    const newFeature = this.gitgraph.branch("new-feature");
-    newFeature.commit("Implement an awesome feature");
-    master.commit("Hotfix a bug");
-    newFeature.commit("Fix tests");
-
-    // Merge `newFeature` into `master`
-    master.merge(newFeature, "Release new version");
+  public branch(branch: BranchOptions) {
+    this.gitComponent?.branch(branch);
   }
 }

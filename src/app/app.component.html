@@ -1,3 +1,26 @@
-<router-outlet></router-outlet>
+<mat-sidenav-container class="sidenav-container">
+  <!-- <mat-sidenav #drawer class="sidenav" fixedInViewport [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'"
+    [mode]="(isHandset$ | async) ? 'over' : 'side'" [opened]="(isHandset$ | async) === false">
+    <mat-toolbar>Menu</mat-toolbar>
+  </mat-sidenav> -->
 
-<div #gitgraph></div>
+  <mat-sidenav-content>
+    <mat-toolbar color="primary">
+      <button type="button" aria-label="Toggle sidenav" mat-icon-button (click)="drawer.toggle()"
+        *ngIf="isHandset$ | async">
+        <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
+      </button>
+      <span>GIT Explorer</span>
+    </mat-toolbar>
+
+    <div class="content" fxLayout="row" fxLayoutGap="2em grid">
+      <div fxLayout="column" fxLayoutGap="1em" fxFlex="40em">
+        <app-commit-form (onCommit)="commit($event)"></app-commit-form>
+        <app-branch-form (onCheckout)="branch($event)"></app-branch-form>
+      </div>
+      <div fxFlexFill>
+        <app-git-graph></app-git-graph>
+      </div>
+    </div>
+    </mat-sidenav-content>
+    </mat-sidenav-container>
