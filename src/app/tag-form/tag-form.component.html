@@ -1,0 +1,19 @@
+<form [formGroup]="tagForm" (submit)="tag()">
+  <mat-card fxFlex fxFlexAlign="start">
+    <mat-card-title>Tag
+      <mat-card-subtitle>Tag head commit ({{ headCommit?.message }})</mat-card-subtitle>
+    </mat-card-title>
+    <mat-card-content>
+      <div fxLayout="column wrap">
+        <mat-form-field>
+          <mat-label>Name</mat-label>
+          <input matInput type="text" formControlName="name">
+        </mat-form-field>
+      </div>
+    </mat-card-content>
+    <mat-divider></mat-divider>
+    <mat-card-actions>
+      <button mat-stroked-button color="primary" type="submit">Tag</button>
+    </mat-card-actions>
+  </mat-card>
+</form>

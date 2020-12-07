@@ -4,7 +4,9 @@ import {
   GitgraphBranchOptions,
   GitgraphCommitOptions,
   GitgraphMergeOptions,
-  BranchUserApi
+  GitgraphTagOptions,
+  BranchUserApi,
+  Commit,
 } from '@gitgraph/core';
 
 type TNode = SVGElement;
@@ -13,8 +15,10 @@ export type GitOptions = GitgraphOptions;
 export type CommitOptions = GitgraphCommitOptions<TNode>;
 export type BranchOptions = GitgraphBranchOptions<TNode>;
 export type MergeOptions = GitgraphMergeOptions<TNode>;
+export type TagOptions = GitgraphTagOptions<TNode>;
 
 export type BranchOperations = BranchUserApi<TNode>;
+export type CommitInfo = Commit<TNode>;
 
 export const GITGRAPH_OPTIONS = new InjectionToken<GitOptions>('GitgraphOptions', {
   providedIn: 'root',

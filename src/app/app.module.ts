@@ -22,6 +22,7 @@ import { CommitFormComponent } from './commit-form/commit-form.component';
 import { GitGraphComponent } from './git-graph';
 import { DEFAULT_COMMIT_OPTIONS, GITGRAPH_OPTIONS, GitOptions } from './git.config';
 import { MergeFormComponent } from './merge-form/merge-form.component';
+import { TagFormComponent } from './tag-form/tag-form.component';
 
 @NgModule({
   declarations: [
@@ -30,6 +31,7 @@ import { MergeFormComponent } from './merge-form/merge-form.component';
     CommitFormComponent,
     BranchFormComponent,
     MergeFormComponent,
+    TagFormComponent,
   ],
   imports: [
     BrowserModule,

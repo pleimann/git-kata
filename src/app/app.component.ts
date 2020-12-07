@@ -3,7 +3,7 @@ import { AfterViewInit, Component, ViewChild } from '@angular/core';
 import { Observable } from 'rxjs';
 import { map, shareReplay } from 'rxjs/operators';
 import { GitGraphComponent } from './git-graph/git-graph.component';
-import { BranchOptions, CommitOptions, MergeOptions } from './git.config';
+import { BranchOptions, CommitOptions, MergeOptions, TagOptions } from './git.config';
 
 @Component({
   selector: 'app-root',
@@ -14,15 +14,7 @@ export class AppComponent {
   @ViewChild(GitGraphComponent)
   gitComponent: GitGraphComponent | undefined;
 
-  isHandset$: Observable<boolean> = this.breakpointObserver.observe(Breakpoints.Handset)
-    .pipe(
-      map(result => result.matches),
-      shareReplay()
-    );
-
-  constructor(
-    private breakpointObserver: BreakpointObserver,
-  ) { }
+  constructor() { }
 
   public commit(commit: CommitOptions) {
     this.gitComponent?.commit(commit);
@@ -34,5 +26,9 @@ export class AppComponent {
 
   public merge(options: MergeOptions) {
     this.gitComponent?.merge(options)
+  }
+
+  public tag(options: TagOptions) {
+    this.gitComponent?.tag(options);
   }
 }
