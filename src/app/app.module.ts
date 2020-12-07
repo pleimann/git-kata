@@ -12,6 +12,7 @@ import { MatListModule } from '@angular/material/list';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatTabsModule } from '@angular/material/tabs';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { CommitOptions } from '@gitgraph/js';
@@ -50,6 +51,7 @@ import { TagFormComponent } from './tag-form/tag-form.component';
     MatListModule,
     MatCardModule,
     MatSelectModule,
+    MatTabsModule,
   ],
   providers: [
     {

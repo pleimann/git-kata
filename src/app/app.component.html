@@ -25,13 +25,29 @@
 
     <div class="content" fxLayout="row" fxLayoutGap="2em">
       <app-git-graph></app-git-graph>
-      <div fxLayout="column" fxLayoutGap="1em">
-        <app-commit-form (onCommit)="commit($event)"></app-commit-form>
-        <app-branch-form (onCheckout)="branch($event)"></app-branch-form>
-        <app-tag-form (onTag)="tag($event)" [headCommit]="gitComponent?.headCommit$ | async"></app-tag-form>
-        <app-merge-form (onMerge)="merge($event)" [branches]="gitComponent?.branches$ | async"
-          [currentBranch]="gitComponent?.workingBranch$ | async"></app-merge-form>
-      </div>
+      <mat-tab-group dynamicHeight>
+        <mat-tab label="Commit">
+          <ng-template matTabContent>
+            <app-commit-form (onCommit)="commit($event)"></app-commit-form>
+          </ng-template>
+          </mat-tab>
+          <mat-tab label="Tag">
+            <ng-template matTabContent>
+              <app-tag-form (onTag)="tag($event)" [headCommit]="gitComponent?.headCommit$ | async"></app-tag-form>
+            </ng-template>
+          </mat-tab>
+          <mat-tab label="Branch">
+            <ng-template matTabContent>
+            <app-branch-form (onCheckout)="branch($event)"></app-branch-form>
+          </ng-template>
+          </mat-tab>
+          <mat-tab label="Merge">
+            <ng-template matTabContent>
+            <app-merge-form (onMerge)="merge($event)" [branches]="gitComponent?.branches$ | async"
+              [currentBranch]="gitComponent?.workingBranch$ | async"></app-merge-form>
+          </ng-template>
+          </mat-tab>
+          </mat-tab-group>
     </div>
   </mat-sidenav-content>
 </mat-sidenav-container>
